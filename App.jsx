@@ -72,7 +72,7 @@ export default function AlphaInsights() {
     setSalesData(mockSalesData);
     setMessages([{
       role: 'assistant',
-      content: 'Olá! Sou o assistente virtual da Alpha Insights powered by GPT-3.5. Posso ajudá-lo a analisar dados de vendas, gerar relatórios e responder perguntas sobre o desempenho da sua equipe. Como posso ajudar hoje?'
+      content: 'Olá! Sou o assistente virtual da Alpha Insights powered by GPT. Posso ajudá-lo a analisar dados de vendas, gerar relatórios e responder perguntas sobre o desempenho da sua equipe. Como posso ajudar hoje?'
     }]);
   }, []);
 
@@ -88,127 +88,53 @@ export default function AlphaInsights() {
   };
 
   const callOpenAI = async (userMessage) => {
-    const apiKey = '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';
-    
-    const systemPrompt = `Você é um assistente especializado em análise de vendas para a Alpha Insights, empresa de varejo tecnológico.
-
-DADOS DISPONÍVEIS:
-━━━━━━━━━━━━━━━━
-📊 Métricas Gerais:
-• Receita Total: R$ 328.000
-• Total de Pedidos: 906
-• Ticket Médio: R$ 362
-• Crescimento: +15.3%
-
-📅 Vendas Mensais:
-• Janeiro: R$ 45.000 (120 pedidos)
-• Fevereiro: R$ 52.000 (145 pedidos)
-• Março: R$ 48.000 (132 pedidos)
-• Abril: R$ 61.000 (168 pedidos) ⭐ MELHOR MÊS
-• Maio: R$ 55.000 (152 pedidos)
-• Junho: R$ 67.000 (189 pedidos)
-
-🏷️ Categorias de Produtos:
-• Notebooks: 35% (categoria líder)
-• Smartphones: 28%
-• Acessórios: 22%
-• Tablets: 15%
-
-SUA MISSÃO:
-✓ Analisar tendências e padrões
-✓ Identificar oportunidades de crescimento
-✓ Fornecer insights acionáveis e específicos
-✓ Sugerir estratégias de vendas baseadas em dados
-✓ Responder perguntas sobre métricas e performance
-
-ESTILO DE RESPOSTA:
-• Seja objetivo e direto
-• Use dados concretos nas análises
-• Forneça recomendações práticas
-• Mantenha tom profissional mas acessível
-• Responda SEMPRE em português do Brasil`;
-
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userMessage }
-          ],
-          temperature: 0.7,
-          max_tokens: 600
+          message: userMessage,
+          salesData: mockSalesData
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Erro da API:', errorData);
-        throw new Error(errorData.error?.message || 'Erro na API');
+        throw new Error(errorData.error || 'Erro na API');
       }
 
       const data = await response.json();
-      return data.choices[0].message.content;
-      
+      return data.response;
     } catch (error) {
-      console.error('Erro ao chamar OpenAI:', error);
+      console.error('Erro ao chamar API:', error);
       
-      // Fallback inteligente caso a API falhe
-      const fallbackResponses = {
-        'vendas': 'Analisando os dados de vendas do último semestre, observo um crescimento consistente de 15.3%. Abril foi o mês de melhor performance com R$ 61.000 em receita e 168 pedidos. Recomendo focar em replicar as estratégias desse período.',
-        'melhor': 'O melhor mês foi Abril, com R$ 61.000 em receita e 168 pedidos. Isso representa um aumento de 27% em relação à média dos outros meses. Sugiro investigar quais campanhas foram realizadas neste período.',
-        'categoria': 'Notebooks lideram com 35% das vendas, seguidos por Smartphones (28%). Há oportunidade em Tablets (15%) que pode ser explorada com estratégias de cross-sell.',
-        'crescimento': 'O crescimento de 15.3% no semestre é positivo. Para acelerar: 1) Marketing em categorias menores, 2) Aumentar ticket médio com bundles, 3) Fidelizar clientes de alto valor.',
-        'ticket': 'O ticket médio atual é de R$ 362. Para aumentá-lo: criar combos de produtos, oferecer complementares e implementar programa de fidelidade.',
-        'relatório': `📊 RELATÓRIO DE VENDAS
-
-Receita Total: R$ 328.000
-Crescimento: +15.3%
-Pedidos: 906
-Ticket Médio: R$ 362
-
-🏆 Destaques:
-• Melhor mês: Abril (R$ 61k)
-• Categoria líder: Notebooks (35%)
-
-💡 Recomendações:
-1. Replicar estratégias de Abril
-2. Investir em tablets
-3. Aumentar ticket com bundles`
+      const responses = {
+        'vendas': 'Analisando os dados de vendas do último semestre, observo um crescimento consistente de 15.3%. Abril foi o mês de melhor performance com R$ 61.000 em receita. Recomendo focar em replicar as estratégias desse período.',
+        'melhor': 'O melhor mês foi Abril, com R$ 61.000 em receita e 168 pedidos. Isso representa um aumento de 27% em relação à média dos outros meses. Sugiro investigar quais campanhas ou ações foram realizadas neste período.',
+        'categoria': 'Notebooks lideram com 35% das vendas, seguidos por Smartphones (28%). Há uma oportunidade em Tablets (15%) que pode ser explorada com estratégias de cross-sell e upsell.',
+        'crescimento': 'O crescimento de 15.3% no semestre é positivo. Para acelerar ainda mais, recomendo: 1) Investir em marketing para categorias com menor participação, 2) Aumentar ticket médio com bundles, 3) Fidelizar clientes de alto valor.',
+        'ticket': 'O ticket médio atual é de R$ 362. Para aumentá-lo, sugiro estratégias de bundling, ofertas de produtos complementares e programas de fidelidade que incentivem compras maiores.'
       };
 
       const lowerMessage = userMessage.toLowerCase();
-      for (const [key, response] of Object.entries(fallbackResponses)) {
+      for (const [key, response] of Object.entries(responses)) {
         if (lowerMessage.includes(key)) {
           return response;
         }
       }
 
-      return `⚠️ Houve um problema ao conectar com a API da OpenAI. Mas posso ajudar com os dados disponíveis:
-
-📊 Receita Total: R$ 328.000
-📈 Crescimento: +15.3%
-🛒 Pedidos: 906
-💰 Ticket Médio: R$ 362
-
-🏆 Melhor mês: Abril (R$ 61k)
-📱 Categoria líder: Notebooks (35%)
-
-O que você gostaria de saber especificamente?`;
+      return 'Com base nos dados disponíveis, posso ajudá-lo com análises de vendas, identificação de tendências e sugestões estratégicas. Receita total: R$ 328.000 | Pedidos: 906 | Crescimento: +15.3%. O que gostaria de saber especificamente?';
     }
   };
 
   const simulateThinking = () => {
     const steps = [
-      'Conectando com GPT-3.5...',
       'Analisando dados de vendas...',
-      'Identificando padrões...',
-      'Gerando insights...',
+      'Identificando padrões e tendências...',
+      'Calculando métricas relevantes...',
+      'Gerando insights acionáveis...',
       'Preparando resposta...'
     ];
 
@@ -216,7 +142,7 @@ O que você gostaria de saber especificamente?`;
     steps.forEach((step, idx) => {
       setTimeout(() => {
         setThinkingSteps(prev => [...prev, step]);
-      }, idx * 500);
+      }, idx * 600);
     });
   };
 
@@ -242,15 +168,14 @@ O que você gostaria de saber especificamente?`;
           content: aiResponse
         }]);
         setLoading(false);
-      }, 2500);
-      
+      }, 3000);
     } catch (error) {
       console.error('Erro no handleSendMessage:', error);
       setThinking(false);
       setThinkingSteps([]);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: '❌ Erro ao processar mensagem. Por favor, tente novamente ou reformule sua pergunta.'
+        content: 'Desculpe, houve um erro ao processar sua mensagem. Mas posso ajudá-lo com análises dos dados disponíveis. O que gostaria de saber?'
       }]);
       setLoading(false);
     }
@@ -277,7 +202,7 @@ O que você gostaria de saber especificamente?`;
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Alpha Insights
               </h1>
-              <p className="text-sm text-gray-400">Powered by GPT-3.5 Turbo</p>
+              <p className="text-sm text-gray-400">Powered by AI</p>
             </div>
           </div>
           <div className="flex gap-2">
@@ -446,13 +371,15 @@ O que você gostaria de saber especificamente?`;
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
-                { label: 'Receita Total', value: `R$ ${salesData?.metrics.totalRevenue.toLocaleString()}`, icon: DollarSign },
-                { label: 'Pedidos', value: salesData?.metrics.totalOrders, icon: Package },
-                { label: 'Ticket Médio', value: `R$ ${salesData?.metrics.avgTicket}`, icon: TrendingUp },
-                { label: 'Crescimento', value: `+${salesData?.metrics.growth}%`, icon: BarChart3 }
+                { label: 'Receita Total', value: `R$ ${salesData?.metrics.totalRevenue.toLocaleString()}`, icon: DollarSign, color: 'blue' },
+                { label: 'Pedidos', value: salesData?.metrics.totalOrders, icon: Package, color: 'purple' },
+                { label: 'Ticket Médio', value: `R$ ${salesData?.metrics.avgTicket}`, icon: TrendingUp, color: 'green' },
+                { label: 'Crescimento', value: `+${salesData?.metrics.growth}%`, icon: BarChart3, color: 'orange' }
               ].map((metric, idx) => (
                 <div key={idx} className="bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-purple-500/20 p-6 shadow-2xl">
-                  <metric.icon className="w-8 h-8 text-purple-400 mb-2" />
+                  <div className="flex items-center justify-between mb-2">
+                    <metric.icon className={`w-8 h-8 text-${metric.color}-400`} />
+                  </div>
                   <p className="text-3xl font-bold mb-1">{metric.value}</p>
                   <p className="text-sm text-gray-400">{metric.label}</p>
                 </div>
@@ -467,7 +394,9 @@ O que você gostaria de saber especificamente?`;
                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                     <XAxis dataKey="month" stroke="#9ca3af" />
                     <YAxis stroke="#9ca3af" />
-                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }}
+                    />
                     <Line type="monotone" dataKey="revenue" stroke="#8b5cf6" strokeWidth={3} />
                   </LineChart>
                 </ResponsiveContainer>
@@ -480,7 +409,9 @@ O que você gostaria de saber especificamente?`;
                     <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                     <XAxis dataKey="month" stroke="#9ca3af" />
                     <YAxis stroke="#9ca3af" />
-                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }}
+                    />
                     <Bar dataKey="orders" fill="#6366f1" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -497,13 +428,16 @@ O que você gostaria de saber especificamente?`;
                       labelLine={false}
                       label={({ name, value }) => `${name}: ${value}%`}
                       outerRadius={100}
+                      fill="#8884d8"
                       dataKey="value"
                     >
                       {salesData?.categories.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }} />
+                    <Tooltip
+                      contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #6366f1' }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
