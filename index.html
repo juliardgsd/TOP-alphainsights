@@ -1,1 +1,65 @@
-Alpha Insights
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alpha Insights</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.0/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 text-white relative overflow-hidden">
+  <header class="border-b border-purple-500/20 backdrop-blur-xl bg-slate-900/30">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/50">
+          <span class="text-white text-xl">✨</span>
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Alpha Insights</h1>
+          <p class="text-sm text-gray-400">Powered by AI</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <section class="bg-slate-900/50 rounded-2xl border border-purple-500/20 p-6 shadow-2xl">
+      <h2 class="text-lg font-semibold mb-4">Resumo Rápido</h2>
+      <div class="space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-blue-400 text-xl">💰</span>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Receita Total</p>
+            <p class="text-lg font-bold">R$ 328.000</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-purple-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-purple-400 text-xl">📦</span>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Total de Pedidos</p>
+            <p class="text-lg font-bold">906</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
+            <span class="text-green-400 text-xl">📈</span>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400">Crescimento</p>
+            <p class="text-lg font-bold text-green-400">+15.3%</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
