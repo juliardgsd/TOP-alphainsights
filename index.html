@@ -12,25 +12,49 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 text-white relative overflow-hidden">
+<body class="bg-gradient-to-br from-slate-950 via-blue-950 to-purple-950 text-white min-h-screen font-sans">
+  <!-- Header -->
   <header class="border-b border-purple-500/20 backdrop-blur-xl bg-slate-900/30">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/50">
+        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
           <span class="text-white text-xl">✨</span>
         </div>
         <div>
           <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Alpha Insights</h1>
-          <p class="text-sm text-gray-400">Powered by AI</p>
+          <p class="text-sm text-gray-400">Powered by GPT</p>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-8">
-    <section class="bg-slate-900/50 rounded-2xl border border-purple-500/20 p-6 shadow-2xl">
-      <h2 class="text-lg font-semibold mb-4">Resumo Rápido</h2>
-      <div class="space-y-4">
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <!-- Search Bar -->
+    <div class="bg-slate-900/50 p-6 rounded-2xl border border-purple-500/20 shadow-xl">
+      <input
+        type="text"
+        placeholder="Pergunte sobre vendas, métricas, estratégias..."
+        class="w-full bg-slate-800/50 border border-purple-500/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500"
+      />
+    </div>
+
+    <!-- Upload Section -->
+    <div class="bg-slate-900/50 p-6 rounded-2xl border border-purple-500/20 shadow-xl space-y-4">
+      <h2 class="text-lg font-semibold flex items-center gap-2">
+        <span class="text-purple-400 text-xl">📄</span>
+        Carregar Dados
+      </h2>
+      <div class="border-2 border-dashed border-purple-500/30 rounded-xl p-6 text-center">
+        <p class="text-sm text-gray-400">CSV ou XLSX</p>
+        <button class="mt-2 bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 rounded-lg text-sm hover:shadow-lg">Acessar Planilha Google</button>
+      </div>
+    </div>
+
+    <!-- Quick Summary -->
+    <div class="bg-slate-900/50 p-6 rounded-2xl border border-purple-500/20 shadow-xl space-y-4">
+      <h2 class="text-lg font-semibold">Resumo Rápido</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
             <span class="text-blue-400 text-xl">💰</span>
@@ -59,7 +83,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
   </main>
 </body>
 </html>
