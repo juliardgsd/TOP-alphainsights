@@ -1,3 +1,10 @@
+import React from 'react'
+import AlphaInsights from './components/AlphaInsights'
+
+export default function App() {
+  return <AlphaInsights />
+}
+
 import React, { useState, useEffect } from 'react';
 import { Upload, MessageSquare, BarChart3, TrendingUp, DollarSign, Package, Send, Sparkles, FileSpreadsheet, Brain } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
